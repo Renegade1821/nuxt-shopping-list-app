@@ -25,38 +25,63 @@ export default class lists extends VuexModule {
   ];
 
   @Mutation
-  addItem(item: ShoppingItem) {
-    this._list.unshift(item);
+  addItemList(addItem: ShoppingItem) {
+    const index = this._list.findIndex((item) => item.title === addItem.title);
+    if (index === -1) {
+      this._list.unshift(addItem);
+    }
   };
 
   @Mutation
-  checkItem(checkedItem: ShoppingItem) {
-    this._history.push(checkedItem);
-    const index = this._list.findIndex((item) => item.title === checkedItem.title);
+  addItemHistory(addItem: ShoppingItem) {
+    const index = this._history.findIndex((item) => item.title === addItem.title);
+    if (index === -1) {
+      this._history.unshift(addItem);
+    }
+  };
+
+  @Mutation
+  pushToLastIndexList(selectedItem: ShoppingItem) {
+    const index = this._list.findIndex((item) => item.title === selectedItem.title);
     if (index !== -1) {
       this._list.push(this._list.splice(index, 1)[0]);
-      // setTimeout(() => {
-        this._list.pop();
-      // }, 0);
     }
-  };
+  }
 
   @Mutation
-  readdItem(readdItem: ShoppingItem) {
-    const index = this._history.findIndex((item) => item.title === readdItem.title);
+  removeLastIndexList() {
+    this._list.pop();
+  }
+
+  @Mutation
+  pushToLastIndexHistory(selectedItem: ShoppingItem) {
+    const index = this._history.findIndex((item) => item.title === selectedItem.title);
     if (index !== -1) {
-      // setTimeout(() => {
       this._history.push(this._history.splice(index, 1)[0]);
-      this._history.pop();
-      // }, 0);
     }
-  };
+  }
+
+  @Mutation
+  removeLastIndexHistory() {
+    this._history.pop();
+  }
+
+  @Action
+  checkListItem(item: ShoppingItem) {
+    this.context.commit('addItemHistory', item);
+    this.context.commit('pushToLastIndexList', item);
+    setTimeout(() => {
+      this.context.commit('removeLastIndexList');
+    }, 100);
+  }
 
   @Action({ rawError: true })
-  foo(item: any) {
-    console.log(`i'm here!`);
-    this.context.commit('readdItem', item);
-    this.context.commit('addItem', item);
+  checkHistoryItem(item: ShoppingItem) {
+    this.context.commit('addItemList', item);
+    this.context.commit('pushToLastIndexHistory', item);
+    setTimeout(() => {
+      this.context.commit('removeLastIndexHistory');
+    }, 0);
   }
 
   get shoppingList() {

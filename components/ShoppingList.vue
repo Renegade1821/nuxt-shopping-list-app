@@ -26,7 +26,7 @@ export default class ShoppingList extends Vue {
   public shoppingList = this.$store.getters.shoppingList;
 
   public handleTileClick(item: ShoppingItem) {
-    this.$store.commit('checkItem', item);
+    this.$store.dispatch('checkListItem', item);
   }
 }
 </script>

@@ -17,7 +17,7 @@ export default class AddItemComponent extends Vue {
     if (this.newItem === '') {
       return;
     }
-    this.$store.commit('lists/addItem', { title: this.newItem })
+    this.$store.commit('addItemList', { title: this.newItem })
     this.newItem = '';
   }
 }

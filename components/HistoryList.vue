@@ -23,7 +23,7 @@ export default class HistoryList extends Vue {
   public history = this.$store.getters.history;
 
   public handleTileClick(item: ShoppingItem) {
-    this.$store.dispatch('foo', item);
+    this.$store.dispatch('checkHistoryItem', item);
   }
 }
 </script>
