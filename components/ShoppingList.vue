@@ -3,7 +3,7 @@
   <h4 class="d-flex">Einkaufsliste</h4>
   <AddItemComponent></AddItemComponent>
   <TilesList
-    :items="list"
+    :items="shoppingList"
     @tileClick="handleTileClick"
   ></TilesList>
 </div>
@@ -11,36 +11,22 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { store } from '@/store';
 import TilesList from '@/components/TilesList.vue';
 import AddItemComponent from '@/components/AddItemComponent.vue';
 import { ShoppingItem } from '@/models/ShoppingItem.model';
+import { namespace } from 'nuxt-property-decorator'
 
 @Component({
   components: {
-    // TilesList,
-    // AddItemComponent,
+    TilesList,
+    AddItemComponent,
   },
 })
 export default class ShoppingList extends Vue {
-  private newItem = '';
-
-  private store = store;
-
-  private list = store.state.list;
-
-  public addItem() {
-    if (this.newItem === '') {
-      return;
-    }
-    store.addItem({
-      title: this.newItem,
-    });
-    this.newItem = '';
-  }
+  public shoppingList = this.$store.getters.shoppingList;
 
   public handleTileClick(item: ShoppingItem) {
-    this.store.checkItem(item);
+    this.$store.commit('checkItem', item);
   }
 }
 </script>

@@ -1,23 +1,23 @@
 <template>
   <div class="addItemWrapper">
-    <input class="form-control mr-2" v-model="newItem" v-on:keyup.enter="addItem()" />
-    <button class="btn btn-primary" type="submit" v-on:click="addItem()"><b>+</b></button>
+    <input class="form-control mr-2" v-model="newItem" v-on:keyup.enter="handleSubmit()" />
+    <button class="btn btn-primary" type="submit" v-on:click="handleSubmit()"><b>+</b></button>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { store } from '@/store';
+import { namespace } from 'nuxt-property-decorator';
 
 @Component
 export default class AddItemComponent extends Vue {
   private newItem = '';
 
-  public addItem() {
+  public handleSubmit() {
     if (this.newItem === '') {
       return;
     }
-    store.addItem({ title: this.newItem });
+    this.$store.commit('lists/addItem', { title: this.newItem })
     this.newItem = '';
   }
 }
