@@ -1,6 +1,6 @@
 <template>
   <div class="tile">
-    <div class="abbreviation">{{abbreviation}}</div>
+    <div class="abbreviation">{{item.title | abbreviation}}</div>
     <span class="title">{{item.title}}</span>
   </div>
 </template>
@@ -9,13 +9,13 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { ShoppingItem } from '@/models/ShoppingItem.model';
 
-@Component
+@Component({
+  filters: {
+    abbreviation: (value: string) => value.charAt(0).toUpperCase(),
+  }
+})
 export default class Tile extends Vue {
   @Prop() private item!: ShoppingItem;
-
-  get abbreviation(): string {
-    return this.item.title.charAt(0).toUpperCase();
-  }
 }
 </script>
 
